@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import joblib
 import numpy as np
 import os
+from flask_cors import CORS
 
 # === Load Models and Scalers ===
 model_enroll = joblib.load("./models/enrollment_model.pkl")
@@ -15,6 +16,7 @@ scaler_retain = joblib.load("./models/retention_scaler.pkl")
 
 # === Initialize Flask App ===
 app = Flask(__name__)
+CORS(app)
 
 # === Home Route ===
 @app.route("/", methods=["GET"])

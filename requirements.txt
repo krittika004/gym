@@ -4,3 +4,4 @@ joblib
 scikit-learn
 xgboost
 gunicorn
+flask-cors
