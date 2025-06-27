@@ -25,6 +25,17 @@ def home():
 
 # === Enrollment Prediction ===
 @app.route("/predict/enrollment", methods=["POST"])
+def predict():
+    data = request.get_json()
+    current_month = data["current_month"]
+    current_enrollment = data["current_enrollment"]
+    marketing_campaign = data["marketing_campaign"]
+    months_to_predict = data["months_to_predict"]
+    gain = predict_enrollment_gain(current_month, current_enrollment, marketing_campaign, months_to_predict)
+
+    return jsonify({"predicted_new_enrollment": gain})
+
+'''@app.route("/predict/enrollment", methods=["POST"])
 def predict_enrollment():
     data = request.get_json()
     features = np.array([
@@ -34,7 +45,7 @@ def predict_enrollment():
     ]).reshape(1, -1)
     scaled = scaler_enroll.transform(features)
     prediction = model_enroll.predict(scaled)[0]
-    return jsonify({"predicted_enrollment": round(float(prediction), 2)})
+    return jsonify({"predicted_enrollment": round(float(prediction), 2)})'''
 
 # === Maintenance Prediction ===
 @app.route("/predict/maintenance", methods=["POST"])
