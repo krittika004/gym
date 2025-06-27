@@ -14,6 +14,17 @@ scaler_maint = joblib.load("./models/maintenance_scaler.pkl")
 model_retain = joblib.load("./models/retention_model.pkl")
 scaler_retain = joblib.load("./models/retention_scaler.pkl")
 
+def predict_enrollment_gain(current_month: int, current_enrollment: int, marketing_campaign: int, months_to_predict: int):
+    if not (1 <= current_month <= 12):
+        raise ValueError("Month must be between 1 and 12")
+    if not (1 <= months_to_predict <= 12):
+        raise ValueError("Prediction range must be between 1 and 12 months")
+
+    growth_rate = 1.05 if marketing_campaign == 1 else 1.02
+    future_enrollment = current_enrollment * (growth_rate ** months_to_predict)
+    gain = math.ceil(future_enrollment - current_enrollment)
+    return gain
+
 # === Initialize Flask App ===
 app = Flask(__name__)
 CORS(app)
