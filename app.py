@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import joblib
 import numpy as np
 import os
+import math
 from flask_cors import CORS
 
 # === Load Models and Scalers ===
@@ -14,6 +15,10 @@ scaler_maint = joblib.load("./models/maintenance_scaler.pkl")
 model_retain = joblib.load("./models/retention_model.pkl")
 scaler_retain = joblib.load("./models/retention_scaler.pkl")
 
+# === Initialize Flask App ===
+app = Flask(__name__)
+CORS(app)
+
 def predict_enrollment_gain(current_month: int, current_enrollment: int, marketing_campaign: int, months_to_predict: int):
     if not (1 <= current_month <= 12):
         raise ValueError("Month must be between 1 and 12")
@@ -25,9 +30,6 @@ def predict_enrollment_gain(current_month: int, current_enrollment: int, marketi
     gain = math.ceil(future_enrollment - current_enrollment)
     return gain
 
-# === Initialize Flask App ===
-app = Flask(__name__)
-CORS(app)
 
 # === Home Route ===
 @app.route("/", methods=["GET"])
